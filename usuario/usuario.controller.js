@@ -20,11 +20,14 @@ async function createUser(req, res) {
     res.status(500).json(error);
   }
 }
+
+//Obtener usuarios
 async function getUser(req, res) {
   const users = await Usuario.find({});
   res.status(200).json(users);
 }
 
+//Actualizar usuarios
 async function updateUser(req, res) {
   const { _id } = req.params;
   const updates = req.body;
@@ -41,6 +44,7 @@ async function updateUser(req, res) {
   }
 }
 
+//Borrar usuarios
 async function deleteUser(req, res) {
   const { _id } = req.params;
 
