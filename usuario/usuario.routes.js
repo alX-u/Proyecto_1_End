@@ -13,12 +13,12 @@ const router = Router();
 router.get("/", getUser);
 
 // Endpoint POST /prueba
-router.post("/createUser", createUser);
+router.post("/", createUser);
 
 // Endpoint PATCH /prueba
-router.patch("/updateUser/:_id", updateUser);
+router.patch("/:_id", updateUser);
 
 // Endpoint DELETE /prueba
-router.delete("/deleteUser/:_id", deleteUser);
+router.delete("/:_id", deleteUser);
 
 module.exports = router;

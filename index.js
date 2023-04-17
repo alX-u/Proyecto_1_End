@@ -33,7 +33,7 @@ connect();
 app.use(cors());
 app.use(express.json());
 
-app.use("/user", userRoutes);
+app.use("/users", userRoutes);
 
 // Endpoint para 404
 app.use((req, res) => {

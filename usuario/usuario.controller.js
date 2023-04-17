@@ -23,12 +23,18 @@ async function createUser(req, res) {
 
 //Obtener usuarios
 async function getUser(req, res) {
-  const users = await Usuario.find({});
-  res.status(200).json(users);
+  try {
+    const users = await Usuario.find(req.query);
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener los usuarios" });
+  }
 }
 
 //Actualizar usuarios
 async function updateUser(req, res) {
+  //Aquí opto por usar tanto params como body
   const { _id } = req.params;
   const updates = req.body;
 
@@ -46,14 +52,16 @@ async function updateUser(req, res) {
 
 //Borrar usuarios
 async function deleteUser(req, res) {
+  //Aquí uso params
   const { _id } = req.params;
 
   try {
-    const deletedUser = await Usuario.findByIdAndDelete(_id);
-    if (!deletedUser) {
+    //El usuario se inhabilita, en vez de borrarse
+    const deletedUser = await Usuario.findByIdAndUpdate(_id, { active: false });
+    if (!deletedUser)
       return res.status(404).json({ message: "Usuario no encontrado" });
-    }
-    res.status(200).json({ message: "Usuario eliminado correctamente." });
+
+    res.status(200).json({ message: "Usuario inhabilitado correctamente." });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al eliminar el usuario" });
