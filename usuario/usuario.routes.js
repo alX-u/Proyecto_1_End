@@ -16,7 +16,7 @@ router.get("/", getUser);
 router.post("/createUser", createUser);
 
 // Endpoint PATCH /prueba
-router.patch("/", updateUser);
+router.patch("/updateUser/:_id", updateUser);
 
 // Endpoint DELETE /prueba
 router.delete("/deleteUser/:_id", deleteUser);
