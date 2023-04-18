@@ -21,14 +21,38 @@ async function createUser(req, res) {
   }
 }
 
-//Obtener usuarios
-async function getUser(req, res) {
+//Obtener usuario
+async function getUserById(req, res) {
   try {
-    const users = await Usuario.find(req.query);
-    res.status(200).json(users);
+    //Para usuario admin
+    const { _id } = req.params;
+
+    const user = await Usuario.findById(_id);
+
+    res.status(200).json(user);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Error al obtener los usuarios" });
+  }
+}
+
+//Obtener usuario por email y contraseña
+async function getUserByEmailAndPassword(req, res) {
+  try {
+    //Inicio de Sesión
+    const { email, password } = req.query;
+
+    //Buscamos el usuario en base a su email
+    const user = await Usuario.findOne({ email });
+
+    //Comprobamos que la contraseña sea correcta
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) throw new Error("Contraseña incorrecta");
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener el usuario" });
   }
 }
 
@@ -70,7 +94,8 @@ async function deleteUser(req, res) {
 
 module.exports = {
   createUser,
-  getUser,
+  getUserById,
   updateUser,
   deleteUser,
+  getUserByEmailAndPassword,
 };

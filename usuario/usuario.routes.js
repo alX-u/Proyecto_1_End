@@ -1,16 +1,20 @@
 //Importamos las funciones
 const {
   createUser,
-  getUser,
+  getUserById,
   deleteUser,
   updateUser,
+  getUserByEmailAndPassword,
 } = require("./usuario.controller");
 
 const { Router } = require("express");
 const router = Router();
 
 // Endpoint GET /prueba
-router.get("/", getUser);
+router.get("/:_id", getUserById);
+
+// Endpoint GET (Email y Contraseña)
+router.get("/", getUserByEmailAndPassword);
 
 // Endpoint POST /prueba
 router.post("/", createUser);

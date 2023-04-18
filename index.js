@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./usuario/usuario.routes");
+const restaurantRoutes = require("./restaurante/restaurante.routes");
 
 //Creación de la app
 const app = express();
@@ -33,7 +34,10 @@ connect();
 app.use(cors());
 app.use(express.json());
 
+//Rutas de usuarios
 app.use("/users", userRoutes);
+//Rutas de restaurantes
+app.use("/restaurants", restaurantRoutes);
 
 // Endpoint para 404
 app.use((req, res) => {
