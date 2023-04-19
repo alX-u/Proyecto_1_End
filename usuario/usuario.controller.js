@@ -43,7 +43,7 @@ async function getUserByEmailAndPassword(req, res) {
     const { email, password } = req.query;
 
     //Buscamos el usuario en base a su email
-    const user = await Usuario.findOne({ email });
+    const user = await Usuario.findOne({ email, active: true });
 
     //Comprobamos que la contraseña sea correcta
     const isMatch = await user.comparePassword(password);
