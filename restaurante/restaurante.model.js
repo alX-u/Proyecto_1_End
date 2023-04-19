@@ -15,7 +15,7 @@ const restaurantSchema = mongoose.Schema(
       maxlength: 10,
     },
     address: { type: String, required: true },
-    category: { type: String, required: true },
+    category: [{ type: String, required: true }],
     active: { type: Boolean, default: true },
   },
   { timestamps: true, collection: "restaurants" }
