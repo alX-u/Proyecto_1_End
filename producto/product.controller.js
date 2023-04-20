@@ -1,28 +1,83 @@
-const Product = require("./producto.model");
+const Producto = require("./producto.model");
 
-//Creación de usuarios
+//Creación de producto
 async function createProduct(req, res) {
-  res.status(200).json({ message: "OK" });
+  try {
+    const { product_name, description, price, category, restaurante } =
+      req.body;
+    const product = new Producto({
+      product_name,
+      description,
+      price,
+      category,
+      restaurante,
+    });
+    const resultado = await product.save();
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 }
 
-//Obtener usuario
-async function getProduct(req, res) {
-  res.status(200).json({ message: "OK" });
+//Obtener producto por el ID
+async function getProductbyId(req, res) {
+  try {
+    const { _id } = req.params;
+
+    const resultado = await Producto.findById(_id);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(500).json("Error al obtener el producto: ", error);
+  }
 }
 
-//Actualizar usuarios
+//Obtener productos por Restaurante y/o por categoría
+async function getProductsbyRestaurantAndCategory(req, res) {
+  try {
+    const { restaurant, category } = req.query;
+    console.log(category);
+    const filtro = {};
+    if (restaurant) {
+      filtro.restaurante = restaurant;
+    }
+    if (category) {
+      filtro.category = category;
+    }
+    const productos = await Producto.find(filtro);
+    res.status(200).json(productos);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al obtener los productos" });
+  }
+}
+
+//Actualizar producto
 async function updateProduct(req, res) {
-  res.status(200).json({ message: "OK" });
+  //Aquí opto por usar tanto params como body
+  const { _id } = req.params;
+  const updates = req.body;
+
+  try {
+    const updatedProduct = await Producto.findByIdAndUpdate(_id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("Error: ", error);
+    res.status(500).json({ message: "Error al actualizar el producto." });
+  }
 }
 
-//Borrar usuarios
+//Borrar productos
 async function deleteProduct(req, res) {
   res.status(200).json({ message: "OK" });
 }
 
 module.exports = {
   createProduct,
-  getProduct,
+  getProductbyId,
   updateProduct,
   deleteProduct,
+  getProductsbyRestaurantAndCategory,
 };

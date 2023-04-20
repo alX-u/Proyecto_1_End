@@ -43,8 +43,11 @@ async function getRestaurantById(req, res) {
 //Obtener los restaurantes por categoría o si su nombre se asemeja a la búsqueda
 async function getRestaurantByCategory(req, res) {
   try {
-    const { category } = req.params;
-    const restaurant = await Restaurante.find({ category: category });
+    const { category } = req.query;
+    console.log(category);
+    const restaurant = await Restaurante.find({
+      category: { $all: category },
+    });
     res.status(200).json(restaurant);
   } catch (error) {
     console.log(error);
