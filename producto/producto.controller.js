@@ -62,7 +62,7 @@ async function updateProduct(req, res) {
       new: true,
       runValidators: true,
     });
-    res.status(200).json(updatedUser);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     console.log("Error: ", error);
     res.status(500).json({ message: "Error al actualizar el producto." });
@@ -71,7 +71,22 @@ async function updateProduct(req, res) {
 
 //Borrar productos
 async function deleteProduct(req, res) {
-  res.status(200).json({ message: "OK" });
+  //Aquí uso params
+  const { _id } = req.params;
+
+  try {
+    //El usuario se inhabilita, en vez de borrarse
+    const deletedProduct = await Producto.findByIdAndUpdate(_id, {
+      active: false,
+    });
+    if (!deletedProduct)
+      return res.status(404).json({ message: "Producto no encontrado" });
+
+    res.status(200).json({ message: "Producto inhabilitado correctamente." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al eliminar el producto" });
+  }
 }
 
 module.exports = {

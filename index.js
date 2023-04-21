@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./usuario/usuario.routes");
 const restaurantRoutes = require("./restaurante/restaurante.routes");
-const productRoutes = require("./producto/product.routes");
+const productRoutes = require("./producto/producto.routes");
 
 //Creación de la app
 const app = express();

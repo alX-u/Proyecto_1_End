@@ -5,7 +5,7 @@ const {
   deleteProduct,
   getProductbyId,
   getProductsbyRestaurantAndCategory,
-} = require("./product.controller");
+} = require("./producto.controller");
 
 const { Router } = require("express");
 const router = Router();
@@ -19,9 +19,9 @@ router.get("/byRestaurantAndCategory", getProductsbyRestaurantAndCategory);
 router.post("/", createProduct);
 
 // Endpoint PATCH (Actualizar un producto)
-router.patch("/", updateProduct);
+router.patch("/:_id", updateProduct);
 
 // Endpoint DELETE (Inhabilitar un producto)
-router.delete("/", deleteProduct);
+router.delete("/:_id", deleteProduct);
 
 module.exports = router;

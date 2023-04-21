@@ -11,8 +11,8 @@ const {
 const { Router } = require("express");
 const router = Router();
 
-// Endpoint GET (Todos los restaurantes)
-router.get("/", getRestaurants);
+// // Endpoint GET (Todos los restaurantes)
+// router.get("/", getRestaurants);
 
 // Endpoint GET (Múltiples / Por categoría)
 router.get("/byCategory", getRestaurantByCategory);

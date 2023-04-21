@@ -17,16 +17,16 @@ async function createRestaurant(req, res) {
   }
 }
 
-//Obtener todos los restaurantes
-async function getRestaurants(req, res) {
-  try {
-    const restaurants = await Restaurante.find(req.query);
-    res.status(200).json(restaurants);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: "Error al obtener los restaurantes" });
-  }
-}
+// //Obtener todos los restaurantes
+// async function getRestaurants(req, res) {
+//   try {
+//     const restaurants = await Restaurante.find(req.query);
+//     res.status(200).json(restaurants);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Error al obtener los restaurantes" });
+//   }
+// }
 
 //Obtener restaurante por el id (Unidad)
 async function getRestaurantById(req, res) {
@@ -104,6 +104,5 @@ module.exports = {
   getRestaurantById,
   updateRestaurant,
   deleteRestaurant,
-  getRestaurants,
   getRestaurantByCategory,
 };
