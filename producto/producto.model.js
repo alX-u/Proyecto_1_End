@@ -10,7 +10,17 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "restaurants",
       required: true,
+      validate: {
+        validator: async function (value) {
+          const restaurant = await mongoose.model("restaurant").findOne({
+            _id: value,
+          });
+          return restaurant !== null;
+        },
+        message: "Restaurante no encontrado",
+      },
     },
+    active: { type: Boolean, default: true },
   },
   { timestamps: true, collection: "products" }
 );

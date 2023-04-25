@@ -1,6 +1,6 @@
 const Pedido = require("./pedido.model");
 
-//Creación de producto
+//Creación de pedido
 async function createDelivery(req, res) {
   try {
     const { client, restaurant, products } = req.body;
@@ -16,12 +16,12 @@ async function createDelivery(req, res) {
   }
 }
 
-//Obtener producto por el ID
+//Obtener pedido por el ID
 async function getDeliveryById(req, res) {
   try {
     const { _id } = req.params;
 
-    const resultado = await Pedido.findById(_id);
+    const resultado = await Pedido.findById(_id, { active: true });
 
     res.status(200).json(resultado);
   } catch (error) {
@@ -29,7 +29,21 @@ async function getDeliveryById(req, res) {
   }
 }
 
-//Actualizar producto
+//Obtener pedidos enviados pero no aceptados
+async function getNotAcceptedDeliveries(req, res) {
+  try {
+    const resultado = await Pedido.find({
+      sent: true,
+      domiciliary: { $exists: false },
+      active: true,
+    });
+    res.status(200).json(resultado);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//Actualizar pedido
 async function updateDelivery(req, res) {
   //Aquí opto por usar tanto params como body
   const { _id } = req.params;
@@ -47,7 +61,30 @@ async function updateDelivery(req, res) {
   }
 }
 
-//Borrar productos
-async function deleteDelivery(req, res) {}
+//Borrar pedidos
+async function deleteDelivery(req, res) {
+  //Aquí uso params
+  const { _id } = req.params;
 
-module.exports = { createDelivery, getDeliveryById, updateDelivery };
+  try {
+    //El restaurante se inhabilita, en vez de borrarse
+    const deletedDelivery = await Pedido.findByIdAndUpdate(_id, {
+      active: false,
+    });
+    if (!deletedDelivery)
+      return res.status(404).json({ message: "Pedido no encontrado" });
+
+    res.status(200).json({ message: "Pedido inhabilitado correctamente." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error al eliminar el pedido" });
+  }
+}
+
+module.exports = {
+  createDelivery,
+  getDeliveryById,
+  getNotAcceptedDeliveries,
+  updateDelivery,
+  deleteDelivery,
+};

@@ -1,4 +1,10 @@
-const { createDelivery, getDeliveryById } = require("./pedido.controller");
+const {
+  createDelivery,
+  getDeliveryById,
+  getNotAcceptedDeliveries,
+  updateDelivery,
+  deleteDelivery,
+} = require("./pedido.controller");
 
 const { Router } = require("express");
 const router = Router();
@@ -8,5 +14,14 @@ router.post("/", createDelivery);
 
 // Endpoint GET (Obtener por _id)
 router.get("/byID/:id", getDeliveryById);
+
+// Endpoint GET (Obtener por _id)
+router.get("/byNotAcceptedDeliveries", getNotAcceptedDeliveries);
+
+// Endpoint PATCH (Actualizar un pedido)
+router.patch("/:_id", updateDelivery);
+
+// Endpoint DELETE (Inhabilitar un pedido)
+router.delete("/:_id", deleteDelivery);
 
 module.exports = router;

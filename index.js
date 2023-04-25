@@ -4,6 +4,7 @@ const cors = require("cors");
 const userRoutes = require("./usuario/usuario.routes");
 const restaurantRoutes = require("./restaurante/restaurante.routes");
 const productRoutes = require("./producto/producto.routes");
+const deliveryRoutes = require("./pedido/pedido.routes");
 
 //Creación de la app
 const app = express();
@@ -41,6 +42,8 @@ app.use("/users", userRoutes);
 app.use("/restaurants", restaurantRoutes);
 //Rutas de productos
 app.use("/products", productRoutes);
+//Rutas de pedidos
+app.use("/deliveries", deliveryRoutes);
 
 // Endpoint para 404
 app.use((req, res) => {

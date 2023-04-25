@@ -35,7 +35,6 @@ async function getProductbyId(req, res) {
 async function getProductsbyRestaurantAndCategory(req, res) {
   try {
     const { restaurant, category } = req.query;
-    console.log(category);
     const filtro = {};
     if (restaurant) {
       filtro.restaurante = restaurant;

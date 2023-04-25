@@ -6,20 +6,37 @@ const deliverySchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       required: true,
+      validate: {
+        validator: async function (v) {
+          const user = await mongoose.model("user").findById(v);
+          if (!user || user.type !== "Cliente") {
+            throw new Error("El usuario no es de tipo Cliente");
+          }
+        },
+      },
     },
     restaurant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "restaurants",
       required: true,
+      validate: {
+        validator: async function (value) {
+          const restaurant = await mongoose.model("restaurant").findOne({
+            _id: value,
+          });
+          return restaurant !== null;
+        },
+        message: "Restaurante no encontrado",
+      },
     },
     domiciliary: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
       validate: {
         validator: async function (v) {
-          const user = await mongoose.model("users").findById(v);
-          if (!user || user.type !== "domiciliario") {
-            throw new Error("El usuario no es de tipo domiciliario");
+          const user = await mongoose.model("user").findById(v);
+          if (!user || user.type !== "Domiciliario") {
+            throw new Error("El usuario no es de tipo Domiciliario");
           }
         },
       },
@@ -38,6 +55,7 @@ const deliverySchema = mongoose.Schema(
       },
     ],
     sent: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
   },
   { timestamps: true, collection: "deliveries" }
 );
