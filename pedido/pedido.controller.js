@@ -29,6 +29,11 @@ async function getDeliveryById(req, res) {
   }
 }
 
+//Obtener pedidos realizados, enviados, pedidos y/o entre las fechas proveídas
+async function getDeliveryByQuery(req, res) {
+
+}
+
 //Obtener pedidos enviados pero no aceptados
 async function getNotAcceptedDeliveries(req, res) {
   try {

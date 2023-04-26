@@ -16,6 +16,7 @@ const restaurantSchema = mongoose.Schema(
     },
     address: { type: String, required: true },
     category: [{ type: String, required: true }],
+    delivery_number: { type: String, default: 0 },
     active: { type: Boolean, default: true },
   },
   { timestamps: true, collection: "restaurants" }

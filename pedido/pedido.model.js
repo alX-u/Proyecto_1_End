@@ -47,6 +47,15 @@ const deliverySchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "products",
           required: true,
+          validate: {
+            validator: async function (value) {
+              const restaurant = await mongoose.model("product").findOne({
+                _id: value,
+              });
+              return restaurant !== null;
+            },
+            message: "Restaurante no encontrado",
+          },
         },
         amount: {
           type: Number,
