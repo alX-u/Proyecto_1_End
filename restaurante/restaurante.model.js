@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const restaurantSchema = mongoose.Schema(
   {
-    restaurant_name: {
+    name: {
       type: String,
       unique: true,
       required: true,
@@ -16,7 +16,7 @@ const restaurantSchema = mongoose.Schema(
     },
     address: { type: String, required: true },
     category: [{ type: String, required: true }],
-    delivery_number: { type: String, default: 0 },
+    number_of_deliveries: { type: Number, default: 0 },
     active: { type: Boolean, default: true },
   },
   { timestamps: true, collection: "restaurants" }

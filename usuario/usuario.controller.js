@@ -3,9 +3,9 @@ const Usuario = require("./usuario.model");
 //Creación de usuarios
 async function createUser(req, res) {
   try {
-    const { username, password, email, phone_number, address, role } = req.body;
+    const { name, password, email, phone_number, address, role } = req.body;
     const user = new Usuario({
-      username,
+      name,
       //Hay que hashear la contraseña
       password,
       //Verificar el email

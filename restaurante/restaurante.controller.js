@@ -3,9 +3,9 @@ const Restaurante = require("./restaurante.model");
 //Creación de restaurantes
 async function createRestaurant(req, res) {
   try {
-    const { restaurant_name, phone_number, address, category } = req.body;
+    const { name, phone_number, address, category } = req.body;
     const restaurant = new Restaurante({
-      restaurant_name,
+      name,
       phone_number,
       address,
       category,

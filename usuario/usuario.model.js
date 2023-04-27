@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const userSchema = mongoose.Schema(
   {
     // campos
-    username: {
+    name: {
       type: String,
       required: true,
     },
@@ -16,18 +16,26 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      match: [
+        /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/,
+        "Por favor, agrega un email válido",
+      ],
     },
     phone_number: {
       type: String,
+      unique: true,
+      required: true,
       maxlength: 10,
       minlength: 10,
     },
     address: {
       type: String,
+      required: true,
       maxlenght: 48,
     },
     role: {
       type: String,
+      required: true,
       enum: ["Cliente", "Domiciliario", "Administrador"],
     },
     active: {

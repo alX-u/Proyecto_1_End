@@ -3,14 +3,13 @@ const Producto = require("./producto.model");
 //Creación de producto
 async function createProduct(req, res) {
   try {
-    const { product_name, description, price, category, restaurante } =
-      req.body;
+    const { name, description, price, category, restaurant } = req.body;
     const product = new Producto({
-      product_name,
+      name,
       description,
       price,
       category,
-      restaurante,
+      restaurant,
     });
     const resultado = await product.save();
     res.status(200).json(resultado);

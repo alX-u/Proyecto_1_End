@@ -1,6 +1,7 @@
 const {
   createDelivery,
   getDeliveryById,
+  getDeliveryByQuery,
   getNotAcceptedDeliveries,
   updateDelivery,
   deleteDelivery,
@@ -14,6 +15,9 @@ router.post("/", createDelivery);
 
 // Endpoint GET (Obtener por _id)
 router.get("/byID/:id", getDeliveryById);
+
+// Endpoint GET (Obtener por cliente, restaurante, domiciliario)
+router.get("/byQuery", getDeliveryByQuery);
 
 // Endpoint GET (Obtener por _id)
 router.get("/byNotAcceptedDeliveries", getNotAcceptedDeliveries);

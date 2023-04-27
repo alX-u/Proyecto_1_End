@@ -31,11 +31,33 @@ async function getDeliveryById(req, res) {
 
 //Obtener pedidos realizados, enviados, pedidos y/o entre las fechas proveídas
 async function getDeliveryByQuery(req, res) {
-
+  try {
+    const { client, restaurant, domiciliary, startDate, endDate } = req.query;
+    let filtro = {};
+    if (client) {
+      filtro.client = client;
+    }
+    if (restaurant) {
+      filtro.restaurant = restaurant;
+    }
+    if (domiciliary) {
+      filtro.domiciliary = domiciliary;
+    }
+    if (startDate && endDate) {
+      filtro.createdAt = {
+        $gte: new Date(startDate),
+        $lte: new Date(endDate),
+      };
+    }
+    const resultado = await Pedido.find(filtro);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(500).json(error);
+  }
 }
 
 //Obtener pedidos enviados pero no aceptados
-async function getNotAcceptedDeliveries(req, res) {
+async function getNotAcceptedDeliveries(res) {
   try {
     const resultado = await Pedido.find({
       sent: true,
@@ -54,12 +76,24 @@ async function updateDelivery(req, res) {
   const { _id } = req.params;
   const updates = req.body;
 
+  //Verificamos si el pedido ya fue entregado
+  0;
   try {
-    const updatedUser = await Pedido.findByIdAndUpdate(_id, updates, {
-      new: true,
-      runValidators: true,
-    });
-    res.status(200).json(updatedUser);
+    let updatedDelivery = await Pedido.findByOneAndUpdate(
+      { _id: _id, active: true },
+      updates,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    //Aumentamos en 1 el contador de pedidos realizados por el restaurante si su estado pasa a ser Realizado
+    if (updatedDelivery.delivery_state == "Realizado") {
+      updatedDelivery = await Pedido.findByIdAndUpdate(updatedDelivery._id, {
+        $inc: { number_of_deliveries: 1 },
+      });
+    }
+    res.status(200).json(updatedDelivery);
   } catch (error) {
     console.log("Error: ", error);
     res.status(500).json({ message: "Error al actualizar el usuario." });
@@ -89,6 +123,7 @@ async function deleteDelivery(req, res) {
 module.exports = {
   createDelivery,
   getDeliveryById,
+  getDeliveryByQuery,
   getNotAcceptedDeliveries,
   updateDelivery,
   deleteDelivery,
