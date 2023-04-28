@@ -27,7 +27,7 @@ async function getUserById(req, res) {
     //Para usuario admin
     const { _id } = req.params;
 
-    const user = await Usuario.findById(_id);
+    const user = await Usuario.findOne({ _id: _id, active: true });
 
     res.status(200).json(user);
   } catch (error) {
@@ -63,10 +63,14 @@ async function updateUser(req, res) {
   const updates = req.body;
 
   try {
-    const updatedUser = await Usuario.findByIdAndUpdate(_id, updates, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedUser = await Usuario.findByOneAndUpdate(
+      { _id: _id, active: true },
+      updates,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     res.status(200).json(updatedUser);
   } catch (error) {
     console.log("Error: ", error);
@@ -81,7 +85,10 @@ async function deleteUser(req, res) {
 
   try {
     //El usuario se inhabilita, en vez de borrarse
-    const deletedUser = await Usuario.findByIdAndUpdate(_id, { active: false });
+    const deletedUser = await Usuario.findByOneAndUpdate(
+      { _id: _id, active: true },
+      { active: false }
+    );
     if (!deletedUser)
       return res.status(404).json({ message: "Usuario no encontrado" });
 

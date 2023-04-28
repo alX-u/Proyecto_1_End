@@ -32,7 +32,7 @@ async function createRestaurant(req, res) {
 async function getRestaurantById(req, res) {
   try {
     const { _id } = req.params;
-    const restaurant = await Restaurante.findById(_id);
+    const restaurant = await Restaurante.findOne({ _id: _id, active: true });
     res.status(200).json(restaurant);
   } catch (error) {
     console.log(error);
@@ -47,6 +47,7 @@ async function getRestaurantByCategory(req, res) {
     console.log(category);
     const restaurant = await Restaurante.find({
       category: { $all: category },
+      active: true,
     });
     res.status(200).json(restaurant);
   } catch (error) {
@@ -62,8 +63,8 @@ async function updateRestaurant(req, res) {
   const updates = req.body;
 
   try {
-    const updatedRestaurant = await Restaurante.findByIdAndUpdate(
-      _id,
+    const updatedRestaurant = await Restaurante.findByOneAndUpdate(
+      { _id: _id, active: true },
       updates,
       {
         new: true,
@@ -84,9 +85,12 @@ async function deleteRestaurant(req, res) {
 
   try {
     //El restaurante se inhabilita, en vez de borrarse
-    const deletedRestaurant = await Restaurante.findByIdAndUpdate(_id, {
-      active: false,
-    });
+    const deletedRestaurant = await Restaurante.findByOneAndUpdate(
+      { _id: _id, active: true },
+      {
+        active: false,
+      }
+    );
     if (!deletedRestaurant)
       return res.status(404).json({ message: "Restaurante no encontrado" });
 
