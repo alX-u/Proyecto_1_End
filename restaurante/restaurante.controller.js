@@ -32,7 +32,10 @@ async function createRestaurant(req, res) {
 async function getRestaurantById(req, res) {
   try {
     const { _id } = req.params;
-    const restaurant = await Restaurante.findOne({ _id: _id, active: true });
+    const restaurant = await Restaurante.findOne({
+      _id: _id,
+      active: true,
+    }).sort({ number_of_deliveries: -1 });
     res.status(200).json(restaurant);
   } catch (error) {
     console.log(error);
@@ -48,7 +51,7 @@ async function getRestaurantByCategory(req, res) {
     const restaurant = await Restaurante.find({
       category: { $all: category },
       active: true,
-    });
+    }).sort({ number_of_deliveries: -1 });
     res.status(200).json(restaurant);
   } catch (error) {
     console.log(error);
