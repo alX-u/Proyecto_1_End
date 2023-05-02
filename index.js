@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./usuario/usuario.routes");
+const restaurantRoutes = require("./restaurante/restaurante.routes");
+const productRoutes = require("./producto/producto.routes");
+const deliveryRoutes = require("./pedido/pedido.routes");
 
 //Creación de la app
 const app = express();
@@ -33,7 +36,14 @@ connect();
 app.use(cors());
 app.use(express.json());
 
-app.use("/user", userRoutes);
+//Rutas de usuarios
+app.use("/users", userRoutes);
+//Rutas de restaurantes
+app.use("/restaurants", restaurantRoutes);
+//Rutas de productos
+app.use("/products", productRoutes);
+//Rutas de pedidos
+app.use("/deliveries", deliveryRoutes);
 
 // Endpoint para 404
 app.use((req, res) => {
