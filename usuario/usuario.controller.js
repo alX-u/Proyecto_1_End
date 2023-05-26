@@ -85,7 +85,7 @@ async function deleteUser(req, res) {
 
   try {
     //El usuario se inhabilita, en vez de borrarse
-    const deletedUser = await Usuario.findByOneAndUpdate(
+    const deletedUser = await Usuario.findOneAndUpdate(
       { _id: _id, active: true },
       { active: false }
     );
